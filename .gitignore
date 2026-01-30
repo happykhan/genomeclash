@@ -2,6 +2,9 @@
 __pycache__/
 *.py[codz]
 *$py.class
+.genome_cache/
+.next/
+node_modules/
 
 # C extensions
 *.so
@@ -123,6 +126,13 @@ ipython_config.py
 #   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
 #   in the .venv directory. It is recommended not to include this directory in version control.
 .pixi
+
+# Generated data outputs
+data/genomes.csv
+data/reference_genomes.csv
+data/reference_genomes.json
+public/data/genomes.json
+public/print/genome-clash-cards.pdf
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/

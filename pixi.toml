@@ -1,0 +1,16 @@
+[project]
+name = "genomeclash"
+version = "0.1.0"
+description = "Genome Clash data pipeline"
+channels = ["conda-forge", "bioconda"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
+
+[dependencies]
+python = ">=3.11,<3.13"
+ncbi-datasets-cli = "*"
+reportlab = "*"
+
+[tasks]
+genome-metrics = "python scripts/genome_metrics.py"
+build-pdf = "python scripts/print_cards_pdf.py"
+taxid-summary = "python scripts/taxid_reference_table.py"
