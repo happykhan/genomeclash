@@ -97,7 +97,7 @@ export default function HomePage() {
       </div>
 
       <div className="card-wrap">
-        <button className="card" onClick={nextCard} type="button">
+        <div className="card" role="article" aria-label="Genome card">
           <div className="card-frame">
             <div className="card-title">
               <h2>{cardHeader}</h2>
@@ -128,7 +128,7 @@ export default function HomePage() {
               <p>{current?.factoid || "Factoid coming soon."}</p>
             </div>
           </div>
-        </button>
+        </div>
 
         <div className="card-controls">
           <button className="next" type="button" onClick={nextCard}>

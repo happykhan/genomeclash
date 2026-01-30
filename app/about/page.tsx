@@ -18,7 +18,7 @@ export default function AboutPage() {
         affiliated with NCBI.
       </p>
       <p>
-        Made with ❤️ by Nabil-Fareed Alikhan. Source code available on <a href="https://github.com/happykhan/genomeclash" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        Made with ❤️ by <a href="https://happykhan.com" target="_blank" rel="noopener noreferrer">Nabil-Fareed Alikhan</a>. Source code available on <a href="https://github.com/happykhan/genomeclash" target="_blank" rel="noopener noreferrer">GitHub</a>.
       </p>
       <div className="about-rules">
         <h2>Quick Rules</h2>
