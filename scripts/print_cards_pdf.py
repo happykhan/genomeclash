@@ -25,13 +25,16 @@ ROWS = 3
 FONT_DIR = Path("fonts")
 DISPLAY_REGULAR = FONT_DIR / "Space_Grotesk" / "static" / "SpaceGrotesk-Regular.ttf"
 DISPLAY_BOLD = FONT_DIR / "Space_Grotesk" / "static" / "SpaceGrotesk-Bold.ttf"
-BODY_REGULAR = FONT_DIR / "Crimson_Pro" / "static" / "CrimsonPro-Regular.ttf"
-BODY_SEMIBOLD = FONT_DIR / "Crimson_Pro" / "static" / "CrimsonPro-SemiBold.ttf"
+BODY_REGULAR = FONT_DIR / "IBM_Plex_Serif" / "IBMPlexSerif-Regular.ttf"
+BODY_SEMIBOLD = FONT_DIR / "IBM_Plex_Serif" / "IBMPlexSerif-SemiBold.ttf"
+BODY_ITALIC = FONT_DIR / "IBM_Plex_Serif" / "IBMPlexSerif-Italic.ttf"
 
 FONT_DISPLAY = "SpaceGrotesk"
 FONT_DISPLAY_BOLD = "SpaceGrotesk-Bold"
-FONT_BODY = "CrimsonPro"
-FONT_BODY_SEMIBOLD = "CrimsonPro-SemiBold"
+FONT_BODY = "IBMPlexSerif"
+FONT_BODY_SEMIBOLD = "IBMPlexSerif-SemiBold"
+FONT_BODY_ITALIC = "IBMPlexSerif-Italic"
+FONT_MONO = "Courier"
 
 
 def hex_color(value: str) -> colors.Color:
@@ -42,13 +45,17 @@ def hex_color(value: str) -> colors.Color:
 @dataclass
 class GenomeRow:
     species: str
+    species_ani: str | None
     assembly_accession: str | None
-    assembly_level: str | None
+    strain: str | None
+    display_strain_name: str | None
     genome_size_mb: float
     total_cdss: int
     pseudogenes: int
+    trna: int
     gc_content_pct: float
     is_elements_per_mb: float
+    release_date: str | None
     factoid: str | None
 
 
@@ -56,8 +63,10 @@ METRICS = [
     ("Genome size (Mb)", "genome_size_mb"),
     ("Total CDS", "total_cdss"),
     ("Pseudogenes", "pseudogenes"),
+    ("tRNA", "trna"),
     ("GC content (%)", "gc_content_pct"),
     ("IS elements / Mb", "is_elements_per_mb"),
+    ("Release date", "release_date"),
 ]
 
 
@@ -68,13 +77,17 @@ def load_rows(path: Path) -> List[GenomeRow]:
         rows.append(
             GenomeRow(
                 species=row.get("species", "Unknown"),
+                species_ani=row.get("species_ani"),
                 assembly_accession=row.get("assembly_accession"),
-                assembly_level=row.get("assembly_level"),
+                strain=row.get("strain"),
+                display_strain_name=row.get("display_strain_name"),
                 genome_size_mb=float(row.get("genome_size_mb", 0)),
                 total_cdss=int(row.get("total_cdss", 0)),
                 pseudogenes=int(row.get("pseudogenes", 0)),
+                trna=int(row.get("trna", 0)),
                 gc_content_pct=float(row.get("gc_content_pct", 0)),
                 is_elements_per_mb=float(row.get("is_elements_per_mb", 0)),
+                release_date=row.get("release_date"),
                 factoid=row.get("factoid"),
             )
         )
@@ -98,7 +111,20 @@ def wrap_text(text: str, font: str, size: float, max_width: float) -> List[str]:
     return lines
 
 
-def format_metric(value: float | int) -> str:
+def draw_italic_line(c: canvas.Canvas, x: float, y: float, text: str, font: str, size: float) -> None:
+    c.saveState()
+    c.setFont(font, size)
+    c.translate(x, y)
+    c.transform(1, 0, 0.18, 1, 0, 0)
+    c.drawString(0, 0, text)
+    c.restoreState()
+
+
+def format_metric(value: float | int | str | None) -> str:
+    if value is None:
+        return "N/A"
+    if isinstance(value, str):
+        return value
     if isinstance(value, float) and not value.is_integer():
         return f"{value:.2f}"
     return f"{int(value)}"
@@ -111,48 +137,38 @@ def chunked(rows: Sequence[GenomeRow], size: int) -> List[List[GenomeRow]]:
 def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
     # Palette loosely matches the web UI
     card_bg = hex_color("fff9f0")
-    card_border = hex_color("2b2b2b")
+    card_border = hex_color("1f2326")
     accent = hex_color("ff8f2f")
     ink = hex_color("12202a")
     ink_soft = hex_color("3d4a55")
     factoid_bg = colors.Color(0.07, 0.12, 0.16, alpha=0.06)
 
-    radius = 10
-    padding = 10
+    radius = 14
+    padding = 12
 
     c.setFillColor(card_bg)
     c.setStrokeColor(card_border)
-    c.setLineWidth(2)
+    c.setLineWidth(2.2)
     c.roundRect(x, y, CARD_WIDTH, CARD_HEIGHT, radius, stroke=1, fill=1)
-
-    # Icon box
-    icon_size = 32
-    icon_x = x + padding
-    icon_y = y + CARD_HEIGHT - padding - icon_size
-    c.setFillColor(colors.Color(1, 0.56, 0.18, alpha=0.2))
-    c.setStrokeColor(card_border)
-    c.setLineWidth(1.5)
-    c.roundRect(icon_x, icon_y, icon_size, icon_size, 6, stroke=1, fill=1)
-    c.setFillColor(ink)
-    c.setFont(FONT_DISPLAY_BOLD, 11)
-    c.drawCentredString(icon_x + icon_size / 2, icon_y + 10, "DNA")
 
     # Title
     title_x = x + padding
-    title_y = icon_y - 8
+    title_y = y + CARD_HEIGHT - padding - 10
+    display_species = row.species_ani or row.species
     c.setFillColor(ink)
     c.setFont(FONT_DISPLAY_BOLD, 11)
-    title_lines = wrap_text(row.species, FONT_DISPLAY_BOLD, 11, CARD_WIDTH - 2 * padding)
+    title_lines = wrap_text(display_species, FONT_DISPLAY_BOLD, 11, CARD_WIDTH - 2 * padding)
     for line in title_lines[:2]:
-        c.drawString(title_x, title_y, line)
+        draw_italic_line(c, title_x, title_y, line, FONT_DISPLAY_BOLD, 11)
         title_y -= 13
 
     subtitle = row.assembly_accession or "Reference genome"
-    if row.assembly_level:
-        subtitle = f"{subtitle} • {row.assembly_level}"
+    strain = row.display_strain_name or row.strain
+    if strain:
+        subtitle = f"{subtitle} • {strain}"
     c.setFillColor(ink_soft)
-    c.setFont(FONT_BODY, 8.5)
-    subtitle_lines = wrap_text(subtitle, FONT_BODY, 8.5, CARD_WIDTH - 2 * padding)
+    c.setFont(FONT_MONO, 8.2)
+    subtitle_lines = wrap_text(subtitle, FONT_MONO, 8.2, CARD_WIDTH - 2 * padding)
     for line in subtitle_lines[:2]:
         c.drawString(title_x, title_y, line)
         title_y -= 10
@@ -162,10 +178,10 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
     for label, key in METRICS:
         value = getattr(row, key)
         c.setFillColor(ink_soft)
-        c.setFont(FONT_DISPLAY, 8.2)
+        c.setFont(FONT_DISPLAY, 8.0)
         c.drawString(title_x, metrics_top, label)
         c.setFillColor(ink)
-        c.setFont(FONT_DISPLAY_BOLD, 8.5)
+        c.setFont(FONT_DISPLAY_BOLD, 9.0)
         c.drawRightString(x + CARD_WIDTH - padding, metrics_top, format_metric(value))
         c.setStrokeColor(colors.Color(0.07, 0.12, 0.16, alpha=0.18))
         c.setLineWidth(0.5)
@@ -173,7 +189,7 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
         metrics_top -= 14
 
     # Factoid box
-    factoid_height = 50
+    factoid_height = 54
     factoid_y = y + padding
     c.setFillColor(factoid_bg)
     c.setStrokeColor(colors.Color(0.07, 0.12, 0.16, alpha=0.15))
@@ -199,12 +215,12 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
 
 def draw_card_back(c: canvas.Canvas, x: float, y: float) -> None:
     card_bg = hex_color("fff9f0")
-    card_border = hex_color("2b2b2b")
+    card_border = hex_color("1f2326")
     accent = hex_color("ff8f2f")
     ink = hex_color("12202a")
 
-    radius = 10
-    padding = 10
+    radius = 14
+    padding = 12
 
     c.setFillColor(card_bg)
     c.setStrokeColor(card_border)
@@ -299,7 +315,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def register_fonts() -> None:
-    missing = [p for p in (DISPLAY_REGULAR, DISPLAY_BOLD, BODY_REGULAR, BODY_SEMIBOLD) if not p.exists()]
+    missing = [
+        p for p in (DISPLAY_REGULAR, DISPLAY_BOLD, BODY_REGULAR, BODY_SEMIBOLD, BODY_ITALIC) if not p.exists()
+    ]
     if missing:
         missing_list = ", ".join(str(p) for p in missing)
         raise FileNotFoundError(
@@ -311,6 +329,7 @@ def register_fonts() -> None:
     pdfmetrics.registerFont(TTFont(FONT_DISPLAY_BOLD, str(DISPLAY_BOLD)))
     pdfmetrics.registerFont(TTFont(FONT_BODY, str(BODY_REGULAR)))
     pdfmetrics.registerFont(TTFont(FONT_BODY_SEMIBOLD, str(BODY_SEMIBOLD)))
+    pdfmetrics.registerFont(TTFont(FONT_BODY_ITALIC, str(BODY_ITALIC)))
 
 
 def main() -> int:

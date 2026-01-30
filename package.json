@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "taxid-summary": "pixi run taxid-summary",
+    "genome-metrics": "pixi run genome-metrics",
+    "build-pdf": "pixi run build-pdf"
   },
   "dependencies": {
     "next": "^14.2.0",

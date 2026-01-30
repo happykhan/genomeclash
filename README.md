@@ -20,7 +20,7 @@ pixi install
 ### 2) Build the reference table from taxids
 
 ```bash
-pixi run taxid-summary --taxids taxids --out-json data/reference_genomes.json --out-csv data/reference_genomes.csv
+npm run taxid-summary -- --taxids taxids --out-json data/reference_genomes.json --out-csv data/reference_genomes.csv
 ```
 
 This produces the list of reference genome accessions and metadata used in the metrics step.
@@ -28,8 +28,9 @@ This produces the list of reference genome accessions and metadata used in the m
 ### 3) Generate genome metrics
 
 ```bash
-pixi run genome-metrics \
+npm run genome-metrics -- \
   --limit 30 \
+  --input-table data/reference_genomes.json \
   --out-json public/data/genomes.json \
   --out-csv data/genomes.csv
 ```
@@ -48,14 +49,14 @@ Open `http://localhost:3000`.
 ### 5) Build the print-and-play PDF
 
 ```bash
-pixi run build-pdf --input public/data/genomes.json --output public/print/genome-clash-cards.pdf --include-backs
+npm run build-pdf -- --input public/data/genomes.json --output public/print/genome-clash-cards.pdf --include-backs
 ```
 
 The PDF generator expects these font files to match the web UI typography:
 - `fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf`
 - `fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf`
-- `fonts/Crimson_Pro/static/CrimsonPro-Regular.ttf`
-- `fonts/Crimson_Pro/static/CrimsonPro-SemiBold.ttf`
+- `fonts/IBM_Plex_Serif/static/IBMPlexSerif-Regular.ttf`
+- `fonts/IBM_Plex_Serif/static/IBMPlexSerif-SemiBold.ttf`
 
 ## Data outputs
 
@@ -80,5 +81,11 @@ Plus additional metadata when available (assembly accession, taxonomy id, assemb
 ## Local files
 - Taxid summary: `scripts/taxid_reference_table.py`
 - Data pipeline: `scripts/genome_metrics.py`
+
+## End-to-end workflow
+1) Update `taxids` with your taxon IDs (one per line).
+2) Run `npm run taxid-summary -- --taxids taxids`.
+3) Run `npm run genome-metrics -- --input-table data/reference_genomes.json`.
+4) Run the app (`npm run dev`) or build the PDF (`npm run build-pdf -- --include-backs`).
 - Factoids: `data/factoids.csv`
 - Web app: `app`, `public`

@@ -73,17 +73,20 @@ def unzip_dataset(zip_path: Path, dataset_root: Path, force: bool) -> Path:
     return dataset_root
 
 
-def load_factoids(path: Optional[Path]) -> Dict[str, str]:
+def load_factoids(path: Optional[Path]) -> Dict[str, Dict[str, str]]:
     if not path or not path.exists():
-        return {}
-    factoids: Dict[str, str] = {}
+        return {"accession": {}, "species": {}}
+    factoids: Dict[str, Dict[str, str]] = {"accession": {}, "species": {}}
     with path.open("r", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             species = (row.get("species") or "").strip()
+            accession = (row.get("assembly_accession") or "").strip()
             factoid = (row.get("factoid") or "").strip()
+            if accession:
+                factoids["accession"][accession] = factoid
             if species:
-                factoids[species] = factoid
+                factoids["species"][species] = factoid
     return factoids
 
 
@@ -276,7 +279,7 @@ def select_assembly_dir(dataset_root: Path, accession: str) -> Optional[Path]:
 
 
 def assemble_metrics(
-    assembly_dir: Path, meta_map: Dict[str, AssemblyMeta], factoids: Dict[str, str]
+    assembly_dir: Path, meta_map: Dict[str, AssemblyMeta], factoids: Dict[str, Dict[str, str]]
 ) -> Optional[Dict[str, object]]:
     fasta_files = list(assembly_dir.rglob("*.fna"))
     gff_files = list(assembly_dir.rglob("*.gff")) + list(assembly_dir.rglob("*.gff3"))
@@ -312,7 +315,7 @@ def assemble_metrics(
     pseudogenes = meta_pseudogenes if meta_pseudogenes is not None else gff_pseudogenes
     is_elements_per_mb = (is_elements / genome_size_mb) if genome_size_mb else 0
 
-    factoid = factoids.get(species) or ""
+    factoid = factoids.get("accession", {}).get(accession) or factoids.get("species", {}).get(species) or ""
 
     return {
         "species": species,

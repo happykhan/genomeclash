@@ -15,7 +15,7 @@
     "gc_content_pct": 32.87,
     "is_elements": 2,
     "is_elements_per_mb": 0.709,
-    "factoid": "",
+    "factoid": "Gram-positive coccus commonly used as a laboratory strain for studying staphylococcal biology.",
     "taxid_input": "1280"
   },
   {
@@ -53,7 +53,7 @@
     "gc_content_pct": 37.88,
     "is_elements": 142,
     "is_elements_per_mb": 48.643,
-    "factoid": "",
+    "factoid": "Gut commensal that can cause hospital-acquired infections and is known for antibiotic resistance.",
     "taxid_input": "1352"
   },
   {
@@ -72,7 +72,7 @@
     "gc_content_pct": 28.58,
     "is_elements": 0,
     "is_elements_per_mb": 0.0,
-    "factoid": "",
+    "factoid": "Campylobacter species associated with animal hosts and foodborne transmission.",
     "taxid_input": "194"
   },
   {
@@ -91,7 +91,7 @@
     "gc_content_pct": 66.56,
     "is_elements": 7,
     "is_elements_per_mb": 1.117,
-    "factoid": "",
+    "factoid": "Opportunistic pathogen and model strain for studying biofilms and antibiotic resistance.",
     "taxid_input": "287"
   },
   {
@@ -110,7 +110,7 @@
     "gc_content_pct": 55.79,
     "is_elements": 23,
     "is_elements_per_mb": 4.823,
-    "factoid": "",
+    "factoid": "Member of the Enterobacter cloacae complex; can be an opportunistic pathogen.",
     "taxid_input": "354276"
   },
   {
@@ -129,7 +129,7 @@
     "gc_content_pct": 39.15,
     "is_elements": 9,
     "is_elements_per_mb": 2.25,
-    "factoid": "",
+    "factoid": "Opportunistic pathogen notable for survival on surfaces and multidrug resistance.",
     "taxid_input": "470"
   },
   {
@@ -148,7 +148,7 @@
     "gc_content_pct": 52.6,
     "is_elements": 82,
     "is_elements_per_mb": 37.757,
-    "factoid": "",
+    "factoid": "Causative agent of gonorrhea; a human-specific pathogen.",
     "taxid_input": "485"
   },
   {
@@ -167,7 +167,7 @@
     "gc_content_pct": 50.48,
     "is_elements": 159,
     "is_elements_per_mb": 28.42,
-    "factoid": "",
+    "factoid": "Shiga toxin\u2013producing E. coli associated with severe foodborne illness.",
     "taxid_input": "562"
   },
   {
@@ -186,7 +186,7 @@
     "gc_content_pct": 57.12,
     "is_elements": 59,
     "is_elements_per_mb": 10.383,
-    "factoid": "",
+    "factoid": "Opportunistic pathogen associated with pneumonia and bloodstream infections.",
     "taxid_input": "573"
   },
   {
@@ -205,7 +205,7 @@
     "gc_content_pct": 50.62,
     "is_elements": 92,
     "is_elements_per_mb": 17.717,
-    "factoid": "",
+    "factoid": "Pathogen that causes bacillary dysentery; highly infectious.",
     "taxid_input": "620"
   },
   {
@@ -224,7 +224,7 @@
     "gc_content_pct": 38.23,
     "is_elements": 7,
     "is_elements_per_mb": 3.702,
-    "factoid": "",
+    "factoid": "Human respiratory tract bacterium that can cause invasive disease in some strains.",
     "taxid_input": "727"
   },
   {
@@ -243,7 +243,7 @@
     "gc_content_pct": 52.24,
     "is_elements": 26,
     "is_elements_per_mb": 5.251,
-    "factoid": "",
+    "factoid": "Model strain for studying Salmonella pathogenesis and metabolism.",
     "taxid_input": "90371"
   }
 ]
