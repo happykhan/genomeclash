@@ -131,7 +131,6 @@ ipython_config.py
 data/genomes.csv
 data/reference_genomes.csv
 data/reference_genomes.json
-public/data/genomes.json
 public/print/genome-clash-cards.pdf
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
