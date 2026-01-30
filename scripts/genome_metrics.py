@@ -347,8 +347,15 @@ def write_csv(rows: List[Dict[str, object]], path: Path) -> None:
     if not rows:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames: List[str] = []
+    seen = set()
+    for row in rows:
+        for key in row.keys():
+            if key not in seen:
+                seen.add(key)
+                fieldnames.append(key)
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 
@@ -413,6 +420,12 @@ def main() -> int:
         if row:
             if "taxid_input" in ref_row and "taxid_input" not in row:
                 row["taxid_input"] = ref_row.get("taxid_input")
+            if "phylum" in ref_row:
+                row["phylum"] = ref_row.get("phylum")
+            if "gram_stain" in ref_row:
+                row["gram_stain"] = ref_row.get("gram_stain")
+            if "who_priority" in ref_row:
+                row["who_priority"] = ref_row.get("who_priority")
             rows.append(row)
 
     if not rows:

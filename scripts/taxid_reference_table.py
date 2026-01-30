@@ -110,8 +110,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--out-csv",
-        default="data/reference_genomes.csv",
-        help="Output CSV path (default: data/reference_genomes.csv).",
+        default=None,
+        help="Optional output CSV path (default: none).",
     )
     return parser.parse_args()
 
@@ -154,7 +154,8 @@ def main() -> int:
         return 1
 
     write_json(rows, Path(args.out_json))
-    write_csv(rows, Path(args.out_csv))
+    if args.out_csv:
+        write_csv(rows, Path(args.out_csv))
     print(f"Wrote {len(rows)} rows to {args.out_json}")
     return 0
 

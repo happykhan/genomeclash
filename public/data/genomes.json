@@ -16,7 +16,9 @@
     "is_elements": 2,
     "is_elements_per_mb": 0.709,
     "factoid": "Gram-positive coccus commonly used as a laboratory strain for studying staphylococcal biology.",
-    "taxid_input": "1280"
+    "taxid_input": "1280",
+    "phylum": "Firmicutes",
+    "gram_stain": "Gram-positive"
   },
   {
     "species": "Streptococcus pneumoniae",
@@ -35,7 +37,10 @@
     "is_elements": 80,
     "is_elements_per_mb": 37.897,
     "factoid": "Encapsulated bacterium associated with pneumonia and meningitis.",
-    "taxid_input": "1313"
+    "taxid_input": "1313",
+    "phylum": "Firmicutes",
+    "gram_stain": "Gram-positive",
+    "who_priority": true
   },
   {
     "species": "Enterococcus faecium",
@@ -54,7 +59,9 @@
     "is_elements": 142,
     "is_elements_per_mb": 48.643,
     "factoid": "Gut commensal that can cause hospital-acquired infections and is known for antibiotic resistance.",
-    "taxid_input": "1352"
+    "taxid_input": "1352",
+    "phylum": "Firmicutes",
+    "gram_stain": "Gram-positive"
   },
   {
     "species": "Campylobacter armoricus",
@@ -73,7 +80,9 @@
     "is_elements": 0,
     "is_elements_per_mb": 0.0,
     "factoid": "Campylobacter species associated with animal hosts and foodborne transmission.",
-    "taxid_input": "194"
+    "taxid_input": "194",
+    "phylum": "Campylobacterota",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Pseudomonas aeruginosa PAO1",
@@ -92,7 +101,9 @@
     "is_elements": 7,
     "is_elements_per_mb": 1.117,
     "factoid": "Opportunistic pathogen and model strain for studying biofilms and antibiotic resistance.",
-    "taxid_input": "287"
+    "taxid_input": "287",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Enterobacter asburiae",
@@ -111,7 +122,9 @@
     "is_elements": 23,
     "is_elements_per_mb": 4.823,
     "factoid": "Member of the Enterobacter cloacae complex; can be an opportunistic pathogen.",
-    "taxid_input": "354276"
+    "taxid_input": "354276",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Acinetobacter baumannii",
@@ -130,7 +143,9 @@
     "is_elements": 9,
     "is_elements_per_mb": 2.25,
     "factoid": "Opportunistic pathogen notable for survival on surfaces and multidrug resistance.",
-    "taxid_input": "470"
+    "taxid_input": "470",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Neisseria gonorrhoeae",
@@ -149,7 +164,9 @@
     "is_elements": 82,
     "is_elements_per_mb": 37.757,
     "factoid": "Causative agent of gonorrhea; a human-specific pathogen.",
-    "taxid_input": "485"
+    "taxid_input": "485",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Escherichia coli O157:H7 str. Sakai",
@@ -168,7 +185,9 @@
     "is_elements": 159,
     "is_elements_per_mb": 28.42,
     "factoid": "Shiga toxin\u2013producing E. coli associated with severe foodborne illness.",
-    "taxid_input": "562"
+    "taxid_input": "562",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Klebsiella pneumoniae subsp. pneumoniae HS11286",
@@ -187,7 +206,9 @@
     "is_elements": 59,
     "is_elements_per_mb": 10.383,
     "factoid": "Opportunistic pathogen associated with pneumonia and bloodstream infections.",
-    "taxid_input": "573"
+    "taxid_input": "573",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Shigella dysenteriae",
@@ -206,7 +227,9 @@
     "is_elements": 92,
     "is_elements_per_mb": 17.717,
     "factoid": "Pathogen that causes bacillary dysentery; highly infectious.",
-    "taxid_input": "620"
+    "taxid_input": "620",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Haemophilus influenzae",
@@ -225,7 +248,9 @@
     "is_elements": 7,
     "is_elements_per_mb": 3.702,
     "factoid": "Human respiratory tract bacterium that can cause invasive disease in some strains.",
-    "taxid_input": "727"
+    "taxid_input": "727",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
   },
   {
     "species": "Salmonella enterica subsp. enterica serovar Typhimurium str. LT2",
@@ -244,6 +269,239 @@
     "is_elements": 26,
     "is_elements_per_mb": 5.251,
     "factoid": "Model strain for studying Salmonella pathogenesis and metabolism.",
-    "taxid_input": "90371"
+    "taxid_input": "90371",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Bacillus subtilis subsp. subtilis str. 168",
+    "assembly_accession": "GCF_000009045.1",
+    "taxonomy_id": 224308,
+    "assembly_level": "Complete Genome",
+    "release_date": "2009-08-12",
+    "strain": "168",
+    "species_ani": "Bacillus subtilis",
+    "display_strain_name": "",
+    "genome_size_mb": 4.216,
+    "total_cdss": 4237,
+    "pseudogenes": 88,
+    "trna": 86,
+    "gc_content_pct": 43.51,
+    "is_elements": 28,
+    "is_elements_per_mb": 6.642,
+    "factoid": "",
+    "taxid_input": "1423",
+    "phylum": "Firmicutes",
+    "gram_stain": "Gram-positive"
+  },
+  {
+    "species": "Clostridioides difficile 630",
+    "assembly_accession": "GCF_000009205.2",
+    "taxonomy_id": 272563,
+    "assembly_level": "Complete Genome",
+    "release_date": "2017-09-29",
+    "strain": "630",
+    "species_ani": "Clostridioides difficile",
+    "display_strain_name": "",
+    "genome_size_mb": 4.298,
+    "total_cdss": 3806,
+    "pseudogenes": 51,
+    "trna": 88,
+    "gc_content_pct": 29.06,
+    "is_elements": 27,
+    "is_elements_per_mb": 6.282,
+    "factoid": "",
+    "taxid_input": "1496",
+    "phylum": "Firmicutes",
+    "gram_stain": "Gram-positive"
+  },
+  {
+    "species": "Escherichia coli str. K-12 substr. MG1655",
+    "assembly_accession": "GCF_000005845.2",
+    "taxonomy_id": 511145,
+    "assembly_level": "Complete Genome",
+    "release_date": "2013-11-03",
+    "strain": "K-12 substr. MG1655",
+    "species_ani": "Escherichia coli",
+    "display_strain_name": "",
+    "genome_size_mb": 4.642,
+    "total_cdss": 4290,
+    "pseudogenes": 145,
+    "trna": 86,
+    "gc_content_pct": 50.79,
+    "is_elements": 113,
+    "is_elements_per_mb": 24.345,
+    "factoid": "",
+    "taxid_input": "562",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Vibrio cholerae O1 biovar El Tor str. N16961",
+    "assembly_accession": "GCF_000006745.1",
+    "taxonomy_id": 243277,
+    "assembly_level": "Complete Genome",
+    "release_date": "2001-09-18",
+    "strain": "N16961",
+    "species_ani": "Vibrio cholerae",
+    "display_strain_name": "",
+    "genome_size_mb": 4.033,
+    "total_cdss": 3485,
+    "pseudogenes": 99,
+    "trna": 98,
+    "gc_content_pct": 47.49,
+    "is_elements": 28,
+    "is_elements_per_mb": 6.942,
+    "factoid": "",
+    "taxid_input": "666",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Helicobacter pylori 26695",
+    "assembly_accession": "GCF_000008525.1",
+    "taxonomy_id": 85962,
+    "assembly_level": "Complete Genome",
+    "release_date": "2001-09-18",
+    "strain": "26695",
+    "species_ani": "Helicobacter pylori",
+    "display_strain_name": "",
+    "genome_size_mb": 1.668,
+    "total_cdss": 1450,
+    "pseudogenes": 108,
+    "trna": 36,
+    "gc_content_pct": 38.87,
+    "is_elements": 10,
+    "is_elements_per_mb": 5.996,
+    "factoid": "",
+    "taxid_input": "210",
+    "phylum": "Proteobacteria",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Bacteroides fragilis NCTC 9343",
+    "assembly_accession": "GCF_000025985.1",
+    "taxonomy_id": 272559,
+    "assembly_level": "Complete Genome",
+    "release_date": "2005-03-03",
+    "strain": "NCTC 9343",
+    "species_ani": "Bacteroides fragilis",
+    "display_strain_name": "",
+    "genome_size_mb": 5.242,
+    "total_cdss": 4160,
+    "pseudogenes": 70,
+    "trna": 73,
+    "gc_content_pct": 43.11,
+    "is_elements": 20,
+    "is_elements_per_mb": 3.816,
+    "factoid": "",
+    "taxid_input": "817",
+    "phylum": "Bacteroidetes",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Mycobacterium tuberculosis H37Rv",
+    "assembly_accession": "GCF_000195955.2",
+    "taxonomy_id": 83332,
+    "assembly_level": "Complete Genome",
+    "release_date": "2013-02-01",
+    "strain": "H37Rv",
+    "species_ani": "Mycobacterium tuberculosis",
+    "display_strain_name": "",
+    "genome_size_mb": 4.412,
+    "total_cdss": 3906,
+    "pseudogenes": 30,
+    "trna": 45,
+    "gc_content_pct": 65.61,
+    "is_elements": 355,
+    "is_elements_per_mb": 80.471,
+    "factoid": "",
+    "taxid_input": "1773",
+    "phylum": "Actinobacteria",
+    "gram_stain": "Acid-fast"
+  },
+  {
+    "species": "Rhodopseudomonas palustris CGA009",
+    "assembly_accession": "GCF_000195775.1",
+    "taxonomy_id": 258594,
+    "assembly_level": "Complete Genome",
+    "release_date": "2003-12-11",
+    "strain": "CGA009",
+    "species_ani": null,
+    "display_strain_name": "",
+    "genome_size_mb": 5.468,
+    "total_cdss": 4913,
+    "pseudogenes": 51,
+    "trna": 49,
+    "gc_content_pct": 65.03,
+    "is_elements": 15,
+    "is_elements_per_mb": 2.743,
+    "factoid": "",
+    "taxid_input": "1717",
+    "phylum": "Actinobacteria",
+    "gram_stain": "Gram-positive"
+  },
+  {
+    "species": "Streptomyces coelicolor A3(2)",
+    "assembly_accession": "GCF_000203835.1",
+    "taxonomy_id": 100226,
+    "assembly_level": "Complete Genome",
+    "release_date": "2003-05-06",
+    "strain": "A3(2)",
+    "species_ani": "Streptomyces violaceolatus",
+    "display_strain_name": "",
+    "genome_size_mb": 9.055,
+    "total_cdss": 7996,
+    "pseudogenes": 192,
+    "trna": 66,
+    "gc_content_pct": 72.0,
+    "is_elements": 108,
+    "is_elements_per_mb": 11.927,
+    "factoid": "",
+    "taxid_input": "1902",
+    "phylum": "Actinobacteria",
+    "gram_stain": "Gram-positive"
+  },
+  {
+    "species": "Chlamydia trachomatis D/UW-3/CX",
+    "assembly_accession": "GCF_000008725.1",
+    "taxonomy_id": 272561,
+    "assembly_level": "Complete Genome",
+    "release_date": "2001-09-13",
+    "strain": "D/UW-3/CX",
+    "species_ani": "Chlamydia trachomatis",
+    "display_strain_name": "",
+    "genome_size_mb": 1.043,
+    "total_cdss": 887,
+    "pseudogenes": 3,
+    "trna": 37,
+    "gc_content_pct": 41.31,
+    "is_elements": 0,
+    "is_elements_per_mb": 0.0,
+    "factoid": "",
+    "taxid_input": "813",
+    "phylum": "Chlamydiota",
+    "gram_stain": "Gram-negative"
+  },
+  {
+    "species": "Mycoplasmoides genitalium G37",
+    "assembly_accession": "GCF_000027325.1",
+    "taxonomy_id": 243273,
+    "assembly_level": "Complete Genome",
+    "release_date": "2006-01-09",
+    "strain": "G-37",
+    "species_ani": "Mycoplasmoides genitalium",
+    "display_strain_name": "",
+    "genome_size_mb": 0.58,
+    "total_cdss": 504,
+    "pseudogenes": 20,
+    "trna": 36,
+    "gc_content_pct": 31.69,
+    "is_elements": 0,
+    "is_elements_per_mb": 0.0,
+    "factoid": "",
+    "taxid_input": "243273",
+    "phylum": "Mycoplasmatota",
+    "gram_stain": "No cell wall"
   }
 ]

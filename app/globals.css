@@ -200,6 +200,46 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: 12px;
   overflow: hidden;
+  position: relative;
+}
+
+.who-star {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-size: 1rem;
+  color: var(--accent);
+  text-shadow: 0 1px 6px rgba(255, 143, 47, 0.35);
+}
+
+.card-frame.gram-positive {
+  border-color: rgba(120, 86, 201, 0.9);
+  box-shadow: 0 14px 30px rgba(120, 86, 201, 0.12);
+}
+
+.card-frame.gram-negative {
+  border-color: rgba(220, 102, 132, 0.9);
+  box-shadow: 0 14px 30px rgba(220, 102, 132, 0.12);
+}
+
+.card-frame.gram-neutral {
+  border-color: rgba(110, 118, 126, 0.8);
+  box-shadow: 0 14px 30px rgba(110, 118, 126, 0.1);
+}
+
+.card-frame.gram-positive {
+  border-color: rgba(120, 86, 201, 0.9);
+  box-shadow: 0 14px 30px rgba(120, 86, 201, 0.12);
+}
+
+.card-frame.gram-negative {
+  border-color: rgba(220, 102, 132, 0.9);
+  box-shadow: 0 14px 30px rgba(220, 102, 132, 0.12);
+}
+
+.card-frame.gram-neutral {
+  border-color: rgba(110, 118, 126, 0.8);
+  box-shadow: 0 14px 30px rgba(110, 118, 126, 0.1);
 }
 
 .card:hover .card-frame {
@@ -216,6 +256,96 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.card-title__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.phylum-badge {
+  font-family: var(--font-display), "Trebuchet MS", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(18, 32, 42, 0.08);
+  color: var(--ink-soft);
+}
+
+.phylum-firmicutes {
+  background: rgba(32, 106, 93, 0.16);
+  color: #1f4f44;
+}
+
+.phylum-proteobacteria {
+  background: rgba(190, 110, 34, 0.16);
+  color: #6d3e11;
+}
+
+.phylum-actinobacteria {
+  background: rgba(206, 74, 72, 0.16);
+  color: #6a1f1e;
+}
+
+.phylum-bacteroidetes {
+  background: rgba(37, 130, 170, 0.16);
+  color: #0c4f68;
+}
+
+.phylum-campylobacterota {
+  background: rgba(54, 143, 106, 0.16);
+  color: #1f5a43;
+}
+
+.phylum-chlamydiota {
+  background: rgba(176, 137, 48, 0.16);
+  color: #6a4e12;
+}
+
+.phylum-mycoplasmatota {
+  background: rgba(38, 124, 188, 0.16);
+  color: #0f4b6e;
+}
+
+.phylum-unknown {
+  background: rgba(18, 32, 42, 0.08);
+  color: var(--ink-soft);
+}
+
+.gram-indicator {
+  font-family: var(--font-display), "Trebuchet MS", sans-serif;
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(18, 32, 42, 0.2);
+  color: var(--ink);
+  background: rgba(255, 143, 47, 0.1);
+  white-space: nowrap;
+}
+
+.card-frame.gram-positive .gram-indicator {
+  background: rgba(120, 86, 201, 0.18);
+  border-color: rgba(120, 86, 201, 0.45);
+  color: #2f1f61;
+}
+
+.card-frame.gram-negative .gram-indicator {
+  background: rgba(220, 102, 132, 0.18);
+  border-color: rgba(220, 102, 132, 0.45);
+  color: #6b2338;
+}
+
+.card-frame.gram-neutral .gram-indicator {
+  background: rgba(110, 118, 126, 0.18);
+  border-color: rgba(110, 118, 126, 0.45);
+  color: #2f3438;
 }
 
 .card-title p {
@@ -402,5 +532,9 @@ body {
 
   .card-frame {
     height: 520px;
+  }
+
+  .phylum-badge {
+    font-size: 0.65rem;
   }
 }

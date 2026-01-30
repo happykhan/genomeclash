@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import dataclass
+import math
 from pathlib import Path
 from typing import List, Sequence
 
@@ -49,6 +50,9 @@ class GenomeRow:
     assembly_accession: str | None
     strain: str | None
     display_strain_name: str | None
+    phylum: str | None
+    gram_stain: str | None
+    who_priority: bool
     genome_size_mb: float
     total_cdss: int
     pseudogenes: int
@@ -81,6 +85,9 @@ def load_rows(path: Path) -> List[GenomeRow]:
                 assembly_accession=row.get("assembly_accession"),
                 strain=row.get("strain"),
                 display_strain_name=row.get("display_strain_name"),
+                phylum=row.get("phylum"),
+                gram_stain=row.get("gram_stain"),
+                who_priority=parse_bool(row.get("who_priority")),
                 genome_size_mb=float(row.get("genome_size_mb", 0)),
                 total_cdss=int(row.get("total_cdss", 0)),
                 pseudogenes=int(row.get("pseudogenes", 0)),
@@ -120,6 +127,23 @@ def draw_italic_line(c: canvas.Canvas, x: float, y: float, text: str, font: str,
     c.restoreState()
 
 
+def draw_star(c: canvas.Canvas, cx: float, cy: float, outer: float, inner: float) -> None:
+    points = []
+    for i in range(10):
+        angle = (i * 36) - 90
+        radius = outer if i % 2 == 0 else inner
+        rad = angle * 3.1415926535 / 180
+        x = cx + radius * (math.cos(rad))
+        y = cy + radius * (math.sin(rad))
+        points.append((x, y))
+    path = c.beginPath()
+    path.moveTo(points[0][0], points[0][1])
+    for x, y in points[1:]:
+        path.lineTo(x, y)
+    path.close()
+    c.drawPath(path, stroke=0, fill=1)
+
+
 def format_metric(value: float | int | str | None) -> str:
     if value is None:
         return "N/A"
@@ -128,6 +152,63 @@ def format_metric(value: float | int | str | None) -> str:
     if isinstance(value, float) and not value.is_integer():
         return f"{value:.2f}"
     return f"{int(value)}"
+
+
+def parse_bool(value: object) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return False
+    return str(value).strip().lower() in {"1", "true", "yes", "y"}
+
+
+def gram_key_from_value(value: str | None) -> str:
+    gram = (value or "").lower()
+    if "positive" in gram:
+        return "positive"
+    if "negative" in gram:
+        return "negative"
+    if "no cell wall" in gram or "acid-fast" in gram:
+        return "neutral"
+    return "neutral"
+
+
+def gram_border_color(key: str, fallback: colors.Color) -> colors.Color:
+    if key == "positive":
+        return colors.Color(0.47, 0.34, 0.79, alpha=0.9)
+    if key == "negative":
+        return colors.Color(0.86, 0.4, 0.52, alpha=0.9)
+    return colors.Color(0.43, 0.46, 0.49, alpha=0.8)
+
+
+def gram_label_from_key(key: str, raw: str | None) -> tuple[str, str]:
+    if key == "positive":
+        return "GRAM +", "Gram-positive"
+    if key == "negative":
+        return "GRAM −", "Gram-negative"
+    return (raw or "Atypical").upper(), raw or "Atypical"
+
+
+def gram_pill_colors(key: str) -> tuple[colors.Color, colors.Color]:
+    if key == "positive":
+        return colors.Color(0.47, 0.34, 0.79, alpha=0.18), hex_color("2f1f61")
+    if key == "negative":
+        return colors.Color(0.86, 0.4, 0.52, alpha=0.18), hex_color("6b2338")
+    return colors.Color(0.43, 0.46, 0.49, alpha=0.18), hex_color("2f3438")
+
+
+def phylum_colors(phylum: str) -> tuple[colors.Color, colors.Color]:
+    key = phylum.strip().lower()
+    palette = {
+        "firmicutes": (colors.Color(0.13, 0.42, 0.36, alpha=0.16), hex_color("1f4f44")),
+        "proteobacteria": (colors.Color(0.75, 0.43, 0.13, alpha=0.16), hex_color("6d3e11")),
+        "actinobacteria": (colors.Color(0.81, 0.29, 0.28, alpha=0.16), hex_color("6a1f1e")),
+        "bacteroidetes": (colors.Color(0.15, 0.51, 0.67, alpha=0.16), hex_color("0c4f68")),
+        "campylobacterota": (colors.Color(0.21, 0.56, 0.42, alpha=0.16), hex_color("1f5a43")),
+        "chlamydiota": (colors.Color(0.69, 0.54, 0.19, alpha=0.16), hex_color("6a4e12")),
+        "mycoplasmatota": (colors.Color(0.47, 0.5, 0.53, alpha=0.16), hex_color("3f454b")),
+    }
+    return palette.get(key, (colors.Color(0.07, 0.12, 0.16, alpha=0.08), hex_color("3d4a55")))
 
 
 def chunked(rows: Sequence[GenomeRow], size: int) -> List[List[GenomeRow]]:
@@ -145,16 +226,50 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
 
     radius = 14
     padding = 12
+    top_offset = 8
 
+    gram_key = gram_key_from_value(row.gram_stain)
+    gram_border = gram_border_color(gram_key, card_border)
     c.setFillColor(card_bg)
-    c.setStrokeColor(card_border)
+    c.setStrokeColor(gram_border)
     c.setLineWidth(2.2)
     c.roundRect(x, y, CARD_WIDTH, CARD_HEIGHT, radius, stroke=1, fill=1)
 
+    if row.who_priority:
+        c.setFillColor(accent)
+        draw_star(c, x + CARD_WIDTH - padding - 8, y + CARD_HEIGHT - padding - 6, 6, 2.8)
+
     # Title
     title_x = x + padding
-    title_y = y + CARD_HEIGHT - padding - 10
+    title_y = y + CARD_HEIGHT - padding - 10 - top_offset
     display_species = row.species_ani or row.species
+    phylum = row.phylum or "Unknown phylum"
+    phylum_bg, phylum_text = phylum_colors(phylum)
+
+    # Phylum badge
+    badge_height = 14
+    badge_padding = 6
+    badge_y = title_y + 8
+    c.setFont(FONT_DISPLAY, 7.2)
+    badge_text_width = stringWidth(phylum.upper(), FONT_DISPLAY, 7.2)
+    badge_width = badge_text_width + badge_padding * 2
+    c.setFillColor(phylum_bg)
+    c.setStrokeColor(colors.Color(0, 0, 0, alpha=0))
+    c.roundRect(title_x, badge_y, badge_width, badge_height, 8, stroke=0, fill=1)
+    c.setFillColor(phylum_text)
+    c.drawString(title_x + badge_padding, badge_y + 4, phylum.upper())
+
+    # Gram indicator pill
+    gram_text, gram_label = gram_label_from_key(gram_key, row.gram_stain)
+    gram_bg, gram_text_color = gram_pill_colors(gram_key)
+    gram_width = stringWidth(gram_text, FONT_DISPLAY, 7.2) + badge_padding * 2
+    gram_x = title_x + badge_width + 6
+    c.setFillColor(gram_bg)
+    c.roundRect(gram_x, badge_y, gram_width, badge_height, 8, stroke=0, fill=1)
+    c.setFillColor(gram_text_color)
+    c.drawString(gram_x + badge_padding, badge_y + 4, gram_text)
+
+    title_y -= 8
     c.setFillColor(ink)
     c.setFont(FONT_DISPLAY_BOLD, 11)
     title_lines = wrap_text(display_species, FONT_DISPLAY_BOLD, 11, CARD_WIDTH - 2 * padding)
@@ -174,7 +289,7 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
         title_y -= 10
 
     # Metrics
-    metrics_top = title_y - 6
+    metrics_top = title_y - 10
     for label, key in METRICS:
         value = getattr(row, key)
         c.setFillColor(ink_soft)
@@ -186,11 +301,11 @@ def draw_card(c: canvas.Canvas, x: float, y: float, row: GenomeRow) -> None:
         c.setStrokeColor(colors.Color(0.07, 0.12, 0.16, alpha=0.18))
         c.setLineWidth(0.5)
         c.line(title_x, metrics_top - 4, x + CARD_WIDTH - padding, metrics_top - 4)
-        metrics_top -= 14
+        metrics_top -= 13
 
     # Factoid box
-    factoid_height = 54
-    factoid_y = y + padding
+    factoid_height = 56
+    factoid_y = y + padding + 2
     c.setFillColor(factoid_bg)
     c.setStrokeColor(colors.Color(0.07, 0.12, 0.16, alpha=0.15))
     c.roundRect(

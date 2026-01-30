@@ -1,5 +1,9 @@
 # Genome Clash
 
+[![Vercel Deploy](https://vercelbadge.vercel.app/api/happykhan/genomeclash)](https://genomeclash.vercel.app)
+![Node](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)
+![Pixi](https://img.shields.io/badge/pixi-enabled-4c1?logo=conda-forge&logoColor=white)
+
 Genome Clash is a browser-based, educational genomics card game. It turns bacterial genomes into stat-comparison trading cards built from automatically computed genome metrics.
 
 ## Architecture (short)
@@ -20,7 +24,7 @@ pixi install
 ### 2) Build the reference table from taxids
 
 ```bash
-npm run taxid-summary -- --taxids taxids --out-json data/reference_genomes.json --out-csv data/reference_genomes.csv
+npm run taxid-summary -- --taxids taxids --out-json data/reference_genomes.json
 ```
 
 This produces the list of reference genome accessions and metadata used in the metrics step.
