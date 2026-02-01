@@ -62,11 +62,20 @@ The PDF generator expects these font files to match the web UI typography:
 - `fonts/IBM_Plex_Serif/static/IBMPlexSerif-Regular.ttf`
 - `fonts/IBM_Plex_Serif/static/IBMPlexSerif-SemiBold.ttf`
 
+### 6) Balance analysis
+
+```bash
+npm run balance -- --input public/data/genomes.json --out-dir data/balance
+```
+
+This writes CSV summaries (win rates, card strength, correlations, rarity) plus plots.
+
 ## Data outputs
 
 The generated table includes, at minimum:
 - `species`
 - `species_ani`
+- `display_species`
 - `display_strain_name`
 - `genome_size_mb`
 - `total_cdss`

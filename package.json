@@ -13,7 +13,8 @@
     "lint": "next lint",
     "taxid-summary": "pixi run taxid-summary",
     "genome-metrics": "pixi run genome-metrics",
-    "build-pdf": "pixi run build-pdf"
+    "build-pdf": "pixi run build-pdf",
+    "balance": "pixi run balance"
   },
   "dependencies": {
     "next": "^14.2.0",

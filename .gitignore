@@ -130,7 +130,7 @@ ipython_config.py
 # Generated data outputs
 data/genomes.csv
 data/reference_genomes.csv
-data/reference_genomes.json
+data/balance/
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/

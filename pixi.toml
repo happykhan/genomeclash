@@ -9,8 +9,13 @@ platforms = ["osx-arm64", "osx-64", "linux-64"]
 python = ">=3.11,<3.13"
 ncbi-datasets-cli = "*"
 reportlab = "*"
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [tasks]
 genome-metrics = "python scripts/genome_metrics.py"
-build-pdf = "python scripts/print_cards_pdf.py"
+build-pdf = "python scripts/print_cards_pdf.py --include-backs"
 taxid-summary = "python scripts/taxid_reference_table.py"
+balance = "python scripts/balance_analysis.py"
