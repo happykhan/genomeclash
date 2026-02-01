@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 type MetricGroup = {
   key: string;
-  metrics: { key: string; label: string }[];
+  metrics: ReadonlyArray<{ key: string; label: string }>;
 };
 
 type GramIndicator = {
@@ -62,7 +62,7 @@ export default function GenomeCard({
   metricGroups,
 }: {
   current: GenomeRow | undefined;
-  metricGroups: MetricGroup[];
+  metricGroups: ReadonlyArray<MetricGroup>;
 }) {
   const cardHeader = useMemo(() => {
     if (!current) return "Loading genomes…";
