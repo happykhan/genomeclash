@@ -103,10 +103,10 @@ export default function GenomeCard({
         {isWhoPriority ? <span className="who-star" aria-label="WHO priority pathogen">★</span> : null}
         <div className="card-title">
           <div className="card-title__meta">
-            <span className={`phylum-badge ${phylumClass}`}>{phylumLabel}</span>
             <span className="gram-indicator" aria-label={gramIndicator.label} title={gramIndicator.label}>
               {gramIndicator.symbol}
-            </span>
+            </span>            
+            <span className={`phylum-badge ${phylumClass}`}>{phylumLabel}</span>
           </div>
           <h2 style={isLongName ? { fontSize: "1.45rem" } : undefined}>{cardHeader}</h2>
           <p>
