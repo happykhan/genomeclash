@@ -11,7 +11,7 @@ Genome Clash is a browser-based, educational genomics card game. It turns bacter
 - **Data pipeline**: `scripts/genome_metrics.py` downloads each referenced assembly, computes metrics from sequence + annotation files, and emits a single JSON/CSV table.
 - **Web app**: A small Next.js app reads the JSON dataset and renders one genome card at a time with “Next” interaction plus an About page.
 - **Print & play**: `scripts/print_cards_pdf.py` builds a ready-to-print PDF of all cards (A4, standard 2.5\" × 3.5\" size).
-- **Factoids**: `data/factoids.csv` provides optional curated facts keyed by species.
+- **Curation**: `data/curation.csv` provides optional display overrides and factoids keyed by assembly accession.
 
 ## Quick start
 
@@ -91,5 +91,5 @@ Plus additional metadata when available (assembly accession, taxonomy id, assemb
 2) Run `npm run taxid-summary -- --taxids taxids`.
 3) Run `npm run genome-metrics -- --input-table data/reference_genomes.json`.
 4) Run the app (`npm run dev`) or build the PDF (`npm run build-pdf -- --include-backs`).
-- Factoids: `data/factoids.csv`
+- Curation: `data/curation.csv`
 - Web app: `app`, `public`

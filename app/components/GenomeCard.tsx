@@ -29,6 +29,7 @@ type GenomeRow = {
   factoid?: string;
   strain?: string;
   display_strain_name?: string;
+  display_species?: string;
   who_priority?: boolean | string;
 };
 
@@ -66,8 +67,12 @@ export default function GenomeCard({
 }) {
   const cardHeader = useMemo(() => {
     if (!current) return "Loading genomes…";
-    return current.species_ani || current.species;
+    return current.display_species || current.species_ani || current.species;
   }, [current]);
+
+  const isLongName = useMemo(() => {
+    return cardHeader.length >= 25;
+  }, [cardHeader]);
 
   const phylumLabel = useMemo(() => {
     if (!current?.phylum) return "Unknown phylum";
@@ -89,6 +94,9 @@ export default function GenomeCard({
     return current.who_priority.toString().toLowerCase() === "true";
   }, [current]);
 
+  const factoidText = current?.factoid || "Factoid coming soon.";
+  const isLongFactoid = factoidText.length > 70;
+
   return (
     <div className="card" role="article" aria-label="Genome card">
       <div className={`card-frame gram-${gramIndicator.key}`}>
@@ -100,7 +108,7 @@ export default function GenomeCard({
               {gramIndicator.symbol}
             </span>
           </div>
-          <h2>{cardHeader}</h2>
+          <h2 style={isLongName ? { fontSize: "1.45rem" } : undefined}>{cardHeader}</h2>
           <p>
             {current?.assembly_accession ?? "Reference genome"}
             {strainLabel ? ` • ${strainLabel}` : ""}
@@ -124,8 +132,8 @@ export default function GenomeCard({
           )}
         </div>
 
-        <div className="card-factoid">
-          <p>{current?.factoid || "Factoid coming soon."}</p>
+        <div className="card-factoid" style={isLongFactoid ? { fontSize: "0.82rem" } : undefined}>
+          <p>{factoidText}</p>
         </div>
       </div>
     </div>

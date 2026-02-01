@@ -73,21 +73,23 @@ def unzip_dataset(zip_path: Path, dataset_root: Path, force: bool) -> Path:
     return dataset_root
 
 
-def load_factoids(path: Optional[Path]) -> Dict[str, Dict[str, str]]:
+def load_curation(path: Optional[Path]) -> Dict[str, Dict[str, str]]:
     if not path or not path.exists():
-        return {"accession": {}, "species": {}}
-    factoids: Dict[str, Dict[str, str]] = {"accession": {}, "species": {}}
+        return {}
+    curation: Dict[str, Dict[str, str]] = {}
     with path.open("r", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             species = (row.get("species") or "").strip()
             accession = (row.get("assembly_accession") or "").strip()
-            factoid = (row.get("factoid") or "").strip()
             if accession:
-                factoids["accession"][accession] = factoid
-            if species:
-                factoids["species"][species] = factoid
-    return factoids
+                curation[accession] = {
+                    "species": species,
+                    "factoid": (row.get("factoid") or "").strip(),
+                    "display_species": (row.get("display_species") or "").strip(),
+                    "display_strain_name": (row.get("display_strain_name") or "").strip(),
+                }
+    return curation
 
 
 def load_metadata(report_path: Path) -> Dict[str, AssemblyMeta]:
@@ -279,7 +281,7 @@ def select_assembly_dir(dataset_root: Path, accession: str) -> Optional[Path]:
 
 
 def assemble_metrics(
-    assembly_dir: Path, meta_map: Dict[str, AssemblyMeta], factoids: Dict[str, Dict[str, str]]
+    assembly_dir: Path, meta_map: Dict[str, AssemblyMeta], curation: Dict[str, Dict[str, str]]
 ) -> Optional[Dict[str, object]]:
     fasta_files = list(assembly_dir.rglob("*.fna"))
     gff_files = list(assembly_dir.rglob("*.gff")) + list(assembly_dir.rglob("*.gff3"))
@@ -315,7 +317,10 @@ def assemble_metrics(
     pseudogenes = meta_pseudogenes if meta_pseudogenes is not None else gff_pseudogenes
     is_elements_per_mb = (is_elements / genome_size_mb) if genome_size_mb else 0
 
-    factoid = factoids.get("accession", {}).get(accession) or factoids.get("species", {}).get(species) or ""
+    curated = curation.get(accession, {})
+    factoid = curated.get("factoid", "")
+    display_species = curated.get("display_species", "")
+    display_strain_name = curated.get("display_strain_name", "")
 
     return {
         "species": species,
@@ -325,7 +330,8 @@ def assemble_metrics(
         "release_date": meta.release_date if meta else None,
         "strain": meta.strain if meta else None,
         "species_ani": meta.species_ani if meta else None,
-        "display_strain_name": "",
+        "display_species": display_species or None,
+        "display_strain_name": display_strain_name or None,
         "genome_size_mb": round(genome_size_mb, 3),
         "total_cdss": total_cdss,
         "pseudogenes": pseudogenes,
@@ -360,6 +366,46 @@ def write_csv(rows: List[Dict[str, object]], path: Path) -> None:
         writer.writerows(rows)
 
 
+def append_missing_curation(path: Path, rows: List[Dict[str, object]]) -> None:
+    existing: Dict[str, Dict[str, str]] = {}
+    fieldnames = ["assembly_accession", "species", "factoid", "display_species", "display_strain_name"]
+    if path.exists():
+        with path.open("r", newline="") as handle:
+            reader = csv.DictReader(handle)
+            if reader.fieldnames:
+                fieldnames = list(reader.fieldnames)
+            for row in reader:
+                accession = (row.get("assembly_accession") or "").strip()
+                if accession:
+                    existing[accession] = row
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+    new_rows = []
+    for row in rows:
+        accession = row.get("assembly_accession")
+        if not accession or accession in existing:
+            continue
+        new_rows.append(
+            {
+                "assembly_accession": accession,
+                "species": row.get("species") or "",
+                "factoid": "",
+                "display_species": "",
+                "display_strain_name": "",
+            }
+        )
+
+    if not new_rows:
+        return
+
+    with path.open("a", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        if path.stat().st_size == 0:
+            writer.writeheader()
+        writer.writerows(new_rows)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute genome metrics for reference genomes in a table.")
     parser.add_argument(
@@ -371,7 +417,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--work-dir", default=".genome_cache", help="Working directory for downloads.")
     parser.add_argument("--out-json", default="public/data/genomes.json", help="Output JSON path.")
     parser.add_argument("--out-csv", default=None, help="Optional output CSV path.")
-    parser.add_argument("--factoids", default="data/factoids.csv", help="Factoids CSV path.")
+    parser.add_argument("--curation", default="data/curation.csv", help="Curation CSV path.")
     parser.add_argument("--skip-download", action="store_true", help="Skip NCBI download step.")
     parser.add_argument("--force", action="store_true", help="Force re-extraction of dataset.")
     return parser.parse_args()
@@ -390,7 +436,8 @@ def main() -> int:
     if args.limit:
         reference_rows = reference_rows[: args.limit]
 
-    factoids = load_factoids(Path(args.factoids) if args.factoids else None)
+    curation_path = Path(args.curation) if args.curation else None
+    curation = load_curation(curation_path)
 
     rows: List[Dict[str, object]] = []
     for ref_row in reference_rows:
@@ -416,7 +463,7 @@ def main() -> int:
         if not assembly_dir:
             continue
 
-        row = assemble_metrics(assembly_dir, meta_map, factoids)
+        row = assemble_metrics(assembly_dir, meta_map, curation)
         if row:
             if "taxid_input" in ref_row and "taxid_input" not in row:
                 row["taxid_input"] = ref_row.get("taxid_input")
@@ -435,6 +482,9 @@ def main() -> int:
     write_json(rows, Path(args.out_json))
     if args.out_csv:
         write_csv(rows, Path(args.out_csv))
+
+    if curation_path:
+        append_missing_curation(curation_path, rows)
 
     print(f"Wrote {len(rows)} assemblies to {args.out_json}")
     if args.out_csv:

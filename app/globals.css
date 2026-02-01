@@ -258,6 +258,10 @@ body {
   overflow: hidden;
 }
 
+.card-title--long {
+  font-size: 1.45rem;
+}
+
 .card-title__meta {
   display: flex;
   align-items: center;
@@ -408,6 +412,10 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.card-factoid--long {
+  font-size: 0.82rem;
 }
 
 .card-controls {
