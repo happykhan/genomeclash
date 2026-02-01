@@ -10,7 +10,7 @@ export default function AboutPage() {
       </p>
       <p>
         All data are generated through an automated pipeline that retrieves bacterial reference
-        genomes from NCBI, computes metrics directly from genome sequences and annotations, and
+        genomes from <a href="https://www.ncbi.nlm.nih.gov/refseq/" target="_blank" rel="noopener noreferrer">NCBI RefSeq</a>, computes metrics directly from genome sequences and annotations, and
         compiles the results into a single structured dataset used by the app.
       </p>
       <p>
@@ -23,14 +23,11 @@ export default function AboutPage() {
       <div className="about-rules">
         <h2>Quick Rules</h2>
         <ul>
-          <li>Each player draws a genome card.</li>
-          <li>Take turns choosing a stat to compare.</li>
-          <li>
-            The higher value wins the round (for release dates, the most recent wins).
-          </li>
-          <li>The winner scores 1 point.</li>
-          <li>N/A counts as the lowest possible value.</li>
-          <li>First to 10 points wins.</li>
+          <li>2 players: open the site separately or use the print-and-play deck.</li>
+          <li>Each player draws one card; one player chooses a stat to compare.</li>
+          <li>Higher value wins the round (most oldest release date wins).</li>
+          <li>Winner scores 1 point; both players draw new cards.</li>
+          <li>N/A counts as the lowest value. First to 10 points wins.</li>
         </ul>
       </div>
     </section>
